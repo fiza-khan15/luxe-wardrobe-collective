@@ -193,13 +193,14 @@ function TrustLayer() {
 
 function Waitlist() {
   const [intent, setIntent] = useState<"renter" | "giver" | "both">("renter");
+  const [email, setEmail] = useState("");
   const [instagram, setInstagram] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!instagram && !linkedin) return;
+    if (!email) return;
     setSubmitted(true);
   };
 
@@ -231,6 +232,22 @@ function Waitlist() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-12 space-y-6 text-left">
+            <div>
+              <label htmlFor="email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                maxLength={255}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@university.edu"
+                className="w-full rounded-full border border-border-strong bg-background px-6 py-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground"
+              />
+            </div>
+
             <div>
               <label htmlFor="instagram" className="sr-only">
                 Instagram handle
