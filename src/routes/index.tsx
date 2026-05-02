@@ -31,7 +31,7 @@ function Nav() {
         </a>
         <a
           href="#waitlist"
-          className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
         >
           Join Waitlist
           <ArrowRight className="h-3.5 w-3.5" />
@@ -63,14 +63,14 @@ function Hero() {
           <div className="animate-rise delay-300 mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
               href="#waitlist"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground transition-transform hover:-translate-y-0.5 sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40 sm:w-auto"
             >
               I want to Rent
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href="#waitlist"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border-strong bg-background px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border-strong bg-background px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-gold hover:text-gold focus-visible:border-gold focus-visible:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/30 sm:w-auto"
             >
               I want to Earn
             </a>
@@ -302,7 +302,7 @@ function Waitlist() {
 
             <button
               type="submit"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
             >
               Secure My Spot
               <ArrowRight className="h-4 w-4" />
