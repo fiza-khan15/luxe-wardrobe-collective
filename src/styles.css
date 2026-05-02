@@ -64,8 +64,8 @@
   --accent: oklch(0.96 0.005 250);
   --accent-foreground: oklch(0.18 0.005 250);
 
-  /* Subtle gold accent */
-  --gold: oklch(0.78 0.13 80);
+  /* Deep red accent */
+  --gold: oklch(0.55 0.22 27);
   --gold-foreground: oklch(0.18 0.005 250);
 
   /* Off-white surface for trust band */
@@ -95,7 +95,7 @@
   --muted-foreground: oklch(0.7 0.01 250);
   --accent: oklch(0.22 0.005 250);
   --accent-foreground: oklch(0.985 0 0);
-  --gold: oklch(0.78 0.13 80);
+  --gold: oklch(0.55 0.22 27);
   --gold-foreground: oklch(0.18 0.005 250);
   --surface: oklch(0.18 0.005 250);
   --destructive: oklch(0.65 0.2 27);
