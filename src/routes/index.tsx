@@ -243,7 +243,7 @@ function Waitlist() {
                 maxLength={255}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@university.edu"
+                placeholder="hello@example.com"
                 className="w-full rounded-full border border-border-strong bg-background px-6 py-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground"
               />
             </div>
