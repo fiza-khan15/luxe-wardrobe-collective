@@ -193,13 +193,13 @@ function TrustLayer() {
 
 function Waitlist() {
   const [intent, setIntent] = useState<"renter" | "giver" | "both">("renter");
-  const [email, setEmail] = useState("");
   const [instagram, setInstagram] = useState("");
+  const [linkedin, setLinkedin] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!instagram && !linkedin) return;
     setSubmitted(true);
   };
 
@@ -232,24 +232,8 @@ function Waitlist() {
         ) : (
           <form onSubmit={handleSubmit} className="mt-12 space-y-6 text-left">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                maxLength={255}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@university.edu"
-                className="w-full rounded-full border border-border-strong bg-background px-6 py-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground"
-              />
-            </div>
-
-            <div>
               <label htmlFor="instagram" className="sr-only">
-                Instagram handle (optional)
+                Instagram handle
               </label>
               <input
                 id="instagram"
@@ -257,7 +241,22 @@ function Waitlist() {
                 maxLength={50}
                 value={instagram}
                 onChange={(e) => setInstagram(e.target.value.replace(/[^a-zA-Z0-9._]/g, ""))}
-                placeholder="Your Instagram handle (optional)"
+                placeholder="Your Instagram handle"
+                className="w-full rounded-full border border-border-strong bg-background px-6 py-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="linkedin" className="sr-only">
+                LinkedIn profile
+              </label>
+              <input
+                id="linkedin"
+                type="text"
+                maxLength={100}
+                value={linkedin}
+                onChange={(e) => setLinkedin(e.target.value)}
+                placeholder="Your LinkedIn profile (optional)"
                 className="w-full rounded-full border border-border-strong bg-background px-6 py-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground"
               />
             </div>
