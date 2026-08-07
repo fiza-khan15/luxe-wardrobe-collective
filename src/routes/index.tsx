@@ -6,13 +6,13 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
   head: () => ({
     meta: [
-      { title: "BrandName — An infinite wardrobe. Zero fast fashion." },
+      { title: "indrobe — An infinite wardrobe. Zero fast fashion." },
       {
         name: "description",
         content:
           "Premium peer-to-peer wardrobe subscription for creators and students. Rent high-end aesthetics for a flat monthly fee, or monetize your closet with zero risk.",
       },
-      { property: "og:title", content: "BrandName — An infinite wardrobe." },
+      { property: "og:title", content: "indrobe — An infinite wardrobe." },
       {
         property: "og:description",
         content:
@@ -27,7 +27,7 @@ function Nav() {
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="#" className="text-lg font-semibold tracking-tight">
-          BrandName<span className="text-gold">.</span>
+          indrobe<span className="text-gold">.</span>
         </a>
         <a
           href="#waitlist"
@@ -319,10 +319,10 @@ function Footer() {
     <footer className="bg-background">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-12 sm:flex-row sm:items-center">
         <p className="text-sm font-semibold tracking-tight">
-          BrandName<span className="text-gold">.</span>
+          indrobe<span className="text-gold">.</span>
         </p>
         <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} BrandName. An infinite wardrobe.
+          © {new Date().getFullYear()} indrobe. An infinite wardrobe.
         </p>
       </div>
     </footer>

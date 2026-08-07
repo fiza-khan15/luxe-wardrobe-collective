@@ -4,12 +4,12 @@ export default defineTool({
   name: "get_brand_overview",
   title: "Get brand overview",
   description:
-    "Get the public positioning, tagline, and value proposition of the Luxe Wardrobe Collective peer-to-peer wardrobe subscription.",
+    "Get the public positioning, tagline, and value proposition of the indrobe peer-to-peer wardrobe subscription.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: () => {
     const overview = {
-      name: "Luxe Wardrobe Collective",
+      name: "indrobe",
       tagline: "An infinite wardrobe. Zero fast fashion.",
       audience: "Creators and students",
       pitch:
