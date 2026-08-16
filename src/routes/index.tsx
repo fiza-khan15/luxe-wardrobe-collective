@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight, Check, ShieldCheck, Truck, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -197,10 +199,25 @@ function Waitlist() {
   const [instagram, setInstagram] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || saving) return;
+    setSaving(true);
+    setError(null);
+    const { error: insertError } = await supabase.from("waitlist_signups").insert({
+      email: email.trim(),
+      instagram: instagram.trim() || null,
+      linkedin: linkedin.trim() || null,
+      intent,
+    });
+    setSaving(false);
+    if (insertError) {
+      setError("Something went wrong. Please try again.");
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -209,6 +226,7 @@ function Waitlist() {
     { id: "giver", label: "Giver" },
     { id: "both", label: "Both" },
   ];
+
 
   return (
     <section id="waitlist" className="border-b border-border">
@@ -300,13 +318,21 @@ function Waitlist() {
               </div>
             </div>
 
+            {error && (
+              <p className="text-center text-sm text-gold" role="alert">
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
+              disabled={saving}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40 disabled:pointer-events-none disabled:opacity-60"
             >
-              Secure My Spot
+              {saving ? "Securing your spot…" : "Secure My Spot"}
               <ArrowRight className="h-4 w-4" />
             </button>
+
           </form>
         )}
       </div>
