@@ -318,13 +318,21 @@ function Waitlist() {
               </div>
             </div>
 
+            {error && (
+              <p className="text-center text-sm text-gold" role="alert">
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
+              disabled={saving}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40 disabled:pointer-events-none disabled:opacity-60"
             >
-              Secure My Spot
+              {saving ? "Securing your spot…" : "Secure My Spot"}
               <ArrowRight className="h-4 w-4" />
             </button>
+
           </form>
         )}
       </div>
