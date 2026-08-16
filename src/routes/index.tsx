@@ -197,10 +197,25 @@ function Waitlist() {
   const [instagram, setInstagram] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || saving) return;
+    setSaving(true);
+    setError(null);
+    const { error: insertError } = await supabase.from("waitlist_signups").insert({
+      email: email.trim(),
+      instagram: instagram.trim() || null,
+      linkedin: linkedin.trim() || null,
+      intent,
+    });
+    setSaving(false);
+    if (insertError) {
+      setError("Something went wrong. Please try again.");
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -209,6 +224,7 @@ function Waitlist() {
     { id: "giver", label: "Giver" },
     { id: "both", label: "Both" },
   ];
+
 
   return (
     <section id="waitlist" className="border-b border-border">
