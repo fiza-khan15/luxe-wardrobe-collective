@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight, Check, ShieldCheck, Truck, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
