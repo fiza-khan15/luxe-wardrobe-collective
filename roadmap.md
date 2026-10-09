@@ -1,0 +1,9 @@
+- [x] Apply marketplace schema, role primitives, storage policies, and core rental RPCs.
+- [ ] Add public catalog and item-detail browsing.
+- [ ] Add account registration/sign-in and a lightweight renter profile flow.
+- [ ] Add listing creation with photo upload and publication rules.
+- [ ] Add renter requests and giver request management with lifecycle actions.
+- [ ] Add rental tracking, private condition photos, and dispute reporting.
+- [ ] Add private admin review tools after the admin identity is supplied.
+- [ ] Connect payment creation and verified confirmation after the payment setup is ready.
+- [ ] Verify routes, mobile layout, and preview diagnostics.
