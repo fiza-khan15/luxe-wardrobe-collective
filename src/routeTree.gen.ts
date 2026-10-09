@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BrowseRouteImport } from './routes/browse'
+import { Route as ItemsIdRouteImport } from './routes/items.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrowseRoute = BrowseRouteImport.update({
+  id: '/browse',
+  path: '/browse',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ItemsIdRoute = ItemsIdRouteImport.update({
+  id: '/items/$id',
+  path: '/items/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/browse': typeof BrowseRoute
+  '/items/$id': typeof ItemsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/browse': typeof BrowseRoute
+  '/items/$id': typeof ItemsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/browse': typeof BrowseRoute
+  '/items/$id': typeof ItemsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/browse' | '/items/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/browse' | '/items/$id'
+  id: '__root__' | '/' | '/browse' | '/items/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BrowseRoute: typeof BrowseRoute
+  ItemsIdRoute: typeof ItemsIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/browse': {
+      id: '/browse'
+      path: '/browse'
+      fullPath: '/browse'
+      preLoaderRoute: typeof BrowseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/items/$id': {
+      id: '/items/$id'
+      path: '/items/$id'
+      fullPath: '/items/$id'
+      preLoaderRoute: typeof ItemsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BrowseRoute: BrowseRoute,
+  ItemsIdRoute: ItemsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
