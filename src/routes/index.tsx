@@ -20,6 +20,8 @@ export const Route = createFileRoute("/")({
         content:
           "Rent high-end fashion or earn from your closet. Insured, verified, peer-to-peer.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });
@@ -64,14 +66,14 @@ function Hero() {
           </p>
           <div className="animate-rise delay-300 mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href="#waitlist"
+              href="/browse"
               className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40 sm:w-auto"
             >
               I want to Rent
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="#waitlist"
+              href="/list"
               className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border-strong bg-background px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-gold hover:text-gold focus-visible:border-gold focus-visible:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/30 sm:w-auto"
             >
               I want to Earn

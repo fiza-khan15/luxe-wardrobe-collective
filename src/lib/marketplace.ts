@@ -25,6 +25,19 @@ export const inr = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value);
 
+export const MIN_RENTAL_DAYS = 1;
+export const MAX_RENTAL_DAYS = 10;
+export const MAX_LISTING_VALUE = 5000;
+export const MIN_LISTING_PHOTOS = 3;
+
+export function isValidRentalDuration(days: number) {
+  return Number.isInteger(days) && days >= MIN_RENTAL_DAYS && days <= MAX_RENTAL_DAYS;
+}
+
+export function canPublishListing(itemValue: number, photoCount: number) {
+  return Number.isInteger(itemValue) && itemValue > 0 && itemValue <= MAX_LISTING_VALUE && photoCount >= MIN_LISTING_PHOTOS;
+}
+
 export const friendlyError = (message: string) => {
   if (message.includes("Invalid login credentials")) return "That email and password don't match.";
   if (message.includes("User already registered")) return "An account already exists for this email. Sign in instead.";
