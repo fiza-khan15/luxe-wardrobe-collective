@@ -49,7 +49,7 @@ function AdminPage() {
 
   const changeVerification = async (profile: ProfileRow, status: "approved" | "rejected") => {
     setBusy(profile.id); setError(""); setNotice("");
-    const { error: actionError } = await supabase.rpc("admin_set_verification", { _user: profile.id, _status: status, _reason: status === "rejected" ? reasons[profile.id] || "Please contact support to retry." : null });
+    const { error: actionError } = await supabase.rpc("admin_set_verification", { _user: profile.id, _status: status, _reason: status === "rejected" ? reasons[profile.id] || "Please contact support to retry." : undefined });
     if (actionError) setError(marketplaceError(actionError));
     else { setNotice(`Identity review updated for ${profile.full_name || "the member"}.`); await reload(); }
     setBusy("");

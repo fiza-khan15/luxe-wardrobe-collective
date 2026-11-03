@@ -62,7 +62,7 @@ function RequestsPage() {
         const { error: recordError } = await supabase.from("condition_photos").insert({ request_id: request.id, kind: photoKind, path, uploaded_by: user.id });
         if (recordError) throw recordError;
       }
-      const { error: actionError } = await supabase.rpc("rental_action", { _id: request.id, _action: name, _note: note ?? null });
+      const { error: actionError } = await supabase.rpc("rental_action", { _id: request.id, _action: name, _note: note ?? undefined });
       if (actionError) throw actionError;
       await reload();
       setNotice("Rental updated.");
