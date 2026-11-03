@@ -18,6 +18,8 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedRentalsRouteImport } from './routes/_authenticated/rentals'
 import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated/requests'
+import { Route as GuidesIndexRouteImport } from './routes/guides.index'
+import { Route as GuidesPackingRouteImport } from './routes/guides.packing'
 import { Route as ItemsIdRouteImport } from './routes/items.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -64,6 +66,16 @@ const AuthenticatedRequestsRoute = AuthenticatedRequestsRouteImport.update({
   path: '/requests',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/guides/',
+  path: '/guides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesPackingRoute = GuidesPackingRouteImport.update({
+  id: '/guides/packing',
+  path: '/guides/packing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ItemsIdRoute = ItemsIdRouteImport.update({
   id: '/items/$id',
   path: '/items/$id',
@@ -79,7 +91,9 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/rentals': typeof AuthenticatedRentalsRoute
   '/requests': typeof AuthenticatedRequestsRoute
+  '/guides/packing': typeof GuidesPackingRoute
   '/items/$id': typeof ItemsIdRoute
+  '/guides/': typeof GuidesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -90,7 +104,9 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/rentals': typeof AuthenticatedRentalsRoute
   '/requests': typeof AuthenticatedRequestsRoute
+  '/guides/packing': typeof GuidesPackingRoute
   '/items/$id': typeof ItemsIdRoute
+  '/guides': typeof GuidesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -103,7 +119,9 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/rentals': typeof AuthenticatedRentalsRoute
   '/_authenticated/requests': typeof AuthenticatedRequestsRoute
+  '/guides/packing': typeof GuidesPackingRoute
   '/items/$id': typeof ItemsIdRoute
+  '/guides/': typeof GuidesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -116,7 +134,9 @@ export interface FileRouteTypes {
     | '/profile'
     | '/rentals'
     | '/requests'
+    | '/guides/packing'
     | '/items/$id'
+    | '/guides/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -127,7 +147,9 @@ export interface FileRouteTypes {
     | '/profile'
     | '/rentals'
     | '/requests'
+    | '/guides/packing'
     | '/items/$id'
+    | '/guides'
   id:
     | '__root__'
     | '/'
@@ -139,7 +161,9 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/rentals'
     | '/_authenticated/requests'
+    | '/guides/packing'
     | '/items/$id'
+    | '/guides/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -148,7 +172,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BrowseRoute: typeof BrowseRoute
   ListRoute: typeof ListRoute
+  GuidesPackingRoute: typeof GuidesPackingRoute
   ItemsIdRoute: typeof ItemsIdRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -216,6 +242,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRequestsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/guides/': {
+      id: '/guides/'
+      path: '/guides'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/packing': {
+      id: '/guides/packing'
+      path: '/guides/packing'
+      fullPath: '/guides/packing'
+      preLoaderRoute: typeof GuidesPackingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/items/$id': {
       id: '/items/$id'
       path: '/items/$id'
@@ -249,7 +289,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BrowseRoute: BrowseRoute,
   ListRoute: ListRoute,
+  GuidesPackingRoute: GuidesPackingRoute,
   ItemsIdRoute: ItemsIdRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
