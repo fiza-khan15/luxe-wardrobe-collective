@@ -13,6 +13,7 @@ export function MarketplaceHeader({ backTo }: { backTo?: "/browse" | "/" } = {})
         <nav className="flex items-center gap-1 sm:gap-3" aria-label="Marketplace">
           <Link to="/browse" className="px-2 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground">Discover</Link>
           <Link to="/list" className="hidden px-2 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:block">List a piece</Link>
+          <Link to="/guides" className="px-2 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground">Guides</Link>
           <Button asChild variant="ghost" size="icon" aria-label="My rentals" title="My rentals">
             <Link to="/rentals"><Bell className="h-4 w-4" /></Link>
           </Button>
@@ -36,7 +37,10 @@ export function MarketplaceFooter() {
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <span className="font-semibold text-foreground">indrobe<span className="text-gold">.</span></span>
         <span>Peer-owned style, worn again.</span>
-        <Link to="/" className="hover:text-foreground">About indrobe <ArrowRight className="ml-1 inline h-3 w-3" /></Link>
+        <nav className="flex items-center gap-4" aria-label="Footer">
+          <Link to="/guides" className="hover:text-foreground">Guides</Link>
+          <Link to="/" className="hover:text-foreground">About indrobe <ArrowRight className="ml-1 inline h-3 w-3" /></Link>
+        </nav>
       </div>
     </footer>
   );

@@ -33,13 +33,21 @@ function Nav() {
         <Link to="/" aria-label="indrobe home" className="text-lg font-semibold tracking-tight">
           indrobe<span className="text-gold">.</span>
         </Link>
-        <a
-          href="#waitlist"
-          className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
-        >
-          Join Waitlist
-          <ArrowRight className="h-3.5 w-3.5" />
-        </a>
+        <nav className="flex items-center gap-5">
+          <Link
+            to="/guides"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Guides
+          </Link>
+          <a
+            href="#waitlist"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
+          >
+            Join Waitlist
+            <ArrowRight className="h-3.5 w-3.5" />
+          </a>
+        </nav>
       </div>
     </header>
   );
@@ -349,9 +357,14 @@ function Footer() {
         <Link to="/" aria-label="indrobe home" className="text-sm font-semibold tracking-tight">
           indrobe<span className="text-gold">.</span>
         </Link>
-        <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} indrobe. An infinite wardrobe.
-        </p>
+        <nav className="flex items-center gap-5" aria-label="Footer">
+          <Link to="/guides" className="text-xs text-muted-foreground transition-colors hover:text-foreground">
+            Guides
+          </Link>
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} indrobe. An infinite wardrobe.
+          </p>
+        </nav>
       </div>
     </footer>
   );
