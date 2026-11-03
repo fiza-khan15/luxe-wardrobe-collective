@@ -7,7 +7,7 @@ export function MarketplaceHeader({ backTo }: { backTo?: "/browse" | "/" } = {})
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <Link to="/browse" className="text-lg font-semibold text-foreground">
+        <Link to="/" aria-label="indrobe home" className="text-lg font-semibold text-foreground">
           indrobe<span className="text-gold">.</span>
         </Link>
         <nav className="flex items-center gap-1 sm:gap-3" aria-label="Marketplace">
