@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight, Check, ShieldCheck, Truck, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,9 +30,9 @@ function Nav() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#" className="text-lg font-semibold tracking-tight">
+        <Link to="/" aria-label="indrobe home" className="text-lg font-semibold tracking-tight">
           indrobe<span className="text-gold">.</span>
-        </a>
+        </Link>
         <a
           href="#waitlist"
           className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
@@ -346,9 +346,9 @@ function Footer() {
   return (
     <footer className="bg-background">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-12 sm:flex-row sm:items-center">
-        <p className="text-sm font-semibold tracking-tight">
+        <Link to="/" aria-label="indrobe home" className="text-sm font-semibold tracking-tight">
           indrobe<span className="text-gold">.</span>
-        </p>
+        </Link>
         <p className="text-xs text-muted-foreground">
           © {new Date().getFullYear()} indrobe. An infinite wardrobe.
         </p>
