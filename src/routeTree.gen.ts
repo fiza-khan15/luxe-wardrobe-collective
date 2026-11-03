@@ -13,7 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BrowseRouteImport } from './routes/browse'
+import { Route as ListRouteImport } from './routes/list'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedRentalsRouteImport } from './routes/_authenticated/rentals'
+import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated/requests'
 import { Route as ItemsIdRouteImport } from './routes/items.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,9 +39,29 @@ const BrowseRoute = BrowseRouteImport.update({
   path: '/browse',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ListRoute = ListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRentalsRoute = AuthenticatedRentalsRouteImport.update({
+  id: '/rentals',
+  path: '/rentals',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRequestsRoute = AuthenticatedRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ItemsIdRoute = ItemsIdRouteImport.update({
@@ -50,14 +74,22 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
+  '/list': typeof ListRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/rentals': typeof AuthenticatedRentalsRoute
+  '/requests': typeof AuthenticatedRequestsRoute
   '/items/$id': typeof ItemsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
+  '/list': typeof ListRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/rentals': typeof AuthenticatedRentalsRoute
+  '/requests': typeof AuthenticatedRequestsRoute
   '/items/$id': typeof ItemsIdRoute
 }
 export interface FileRoutesById {
@@ -66,21 +98,47 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
+  '/list': typeof ListRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/rentals': typeof AuthenticatedRentalsRoute
+  '/_authenticated/requests': typeof AuthenticatedRequestsRoute
   '/items/$id': typeof ItemsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/browse' | '/profile' | '/items/$id'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/browse'
+    | '/list'
+    | '/admin'
+    | '/profile'
+    | '/rentals'
+    | '/requests'
+    | '/items/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/browse' | '/profile' | '/items/$id'
+  to:
+    | '/'
+    | '/auth'
+    | '/browse'
+    | '/list'
+    | '/admin'
+    | '/profile'
+    | '/rentals'
+    | '/requests'
+    | '/items/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/browse'
+    | '/list'
+    | '/_authenticated/admin'
     | '/_authenticated/profile'
+    | '/_authenticated/rentals'
+    | '/_authenticated/requests'
     | '/items/$id'
   fileRoutesById: FileRoutesById
 }
@@ -89,6 +147,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BrowseRoute: typeof BrowseRoute
+  ListRoute: typeof ListRoute
   ItemsIdRoute: typeof ItemsIdRoute
 }
 
@@ -122,11 +181,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/list': {
+      id: '/list'
+      path: '/list'
+      fullPath: '/list'
+      preLoaderRoute: typeof ListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/rentals': {
+      id: '/_authenticated/rentals'
+      path: '/rentals'
+      fullPath: '/rentals'
+      preLoaderRoute: typeof AuthenticatedRentalsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/requests': {
+      id: '/_authenticated/requests'
+      path: '/requests'
+      fullPath: '/requests'
+      preLoaderRoute: typeof AuthenticatedRequestsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/items/$id': {
@@ -140,11 +227,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedRentalsRoute: typeof AuthenticatedRentalsRoute
+  AuthenticatedRequestsRoute: typeof AuthenticatedRequestsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedRentalsRoute: AuthenticatedRentalsRoute,
+  AuthenticatedRequestsRoute: AuthenticatedRequestsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -155,6 +248,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BrowseRoute: BrowseRoute,
+  ListRoute: ListRoute,
   ItemsIdRoute: ItemsIdRoute,
 }
 export const routeTree = rootRouteImport
