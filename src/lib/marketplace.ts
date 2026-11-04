@@ -80,5 +80,23 @@ export async function fetchListings(query?: { id?: string; ownerId?: string }) {
   return listings;
 }
 
+export type Counterparty = {
+  full_name: string;
+  city: string;
+  verified: boolean;
+  phone: string | null;
+  address: string | null;
+};
+
+export async function fetchCounterparties(requestIds: string[]): Promise<Map<string, Counterparty>> {
+  const entries = await Promise.all(requestIds.map(async (id) => {
+    const { data, error } = await supabase.rpc("get_counterparty", { _request: id });
+    if (error) throw error;
+    const row = (data?.[0] ?? null) as Counterparty | null;
+    return [id, row] as const;
+  }));
+  return new Map(entries) as Map<string, Counterparty>;
+}
+
 export const marketplaceError = (error: unknown) =>
   friendlyError(error instanceof Error ? error.message : "");

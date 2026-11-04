@@ -517,6 +517,16 @@ export type Database = {
           blocked_start: string
         }[]
       }
+      get_counterparty: {
+        Args: { _request: string }
+        Returns: {
+          address: string
+          city: string
+          full_name: string
+          phone: string
+          verified: boolean
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
