@@ -1,12 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowRight, Check, CircleAlert, ImagePlus, MapPin, ShieldCheck, Truck } from "lucide-react";
+import { ArrowRight, Check, CircleAlert, MapPin, Phone, ShieldCheck, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MarketplaceFrame, PageIntro } from "@/lib/marketplace-ui";
-import { fetchListings, inr, marketplaceError, type MarketplaceListing } from "@/lib/marketplace";
+import { fetchCounterparties, fetchListings, inr, marketplaceError, type Counterparty, type MarketplaceListing } from "@/lib/marketplace";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/requests")({
@@ -28,7 +27,7 @@ const statusLabel: Record<string, string> = { pending: "Reply within 48 hours", 
 function RequestsPage() {
   const { user } = Route.useRouteContext();
   const navigate = useNavigate();
-  const [requests, setRequests] = useState<Request[]>([]); const [listings, setListings] = useState<MarketplaceListing[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [notice, setNotice] = useState(""); const [busyId, setBusyId] = useState(""); const [photos, setPhotos] = useState<Record<string, File | undefined>>({}); const [cleaned, setCleaned] = useState<Record<string, boolean>>({}); const [disputeText, setDisputeText] = useState<Record<string, string>>({});
+  const [requests, setRequests] = useState<Request[]>([]); const [listings, setListings] = useState<MarketplaceListing[]>([]); const [people, setPeople] = useState<Map<string, Counterparty>>(new Map()); const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [notice, setNotice] = useState(""); const [busyId, setBusyId] = useState(""); const [photos, setPhotos] = useState<Record<string, File | undefined>>({}); const [disputeText, setDisputeText] = useState<Record<string, string>>({});
 
   const reload = useCallback(async () => {
     const [result, ownListings] = await Promise.all([
@@ -39,7 +38,8 @@ function RequestsPage() {
     const rows = result.data ?? [];
     const ids = rows.map(({ listing_id }) => listing_id).filter((id) => !ownListings.some((listing) => listing.id === id));
     const linkedRows = await fetchListingsForIds(ids);
-    setRequests(rows); setListings([...ownListings, ...linkedRows]);
+    const people = await fetchCounterparties(rows.map(({ id }) => id));
+    setRequests(rows); setListings([...ownListings, ...linkedRows]); setPeople(people);
   }, [user.id]);
 
   useEffect(() => {
