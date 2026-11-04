@@ -88,14 +88,14 @@ export type Counterparty = {
   address: string | null;
 };
 
-export async function fetchCounterparties(requestIds: string[]) {
+export async function fetchCounterparties(requestIds: string[]): Promise<Map<string, Counterparty>> {
   const entries = await Promise.all(requestIds.map(async (id) => {
     const { data, error } = await supabase.rpc("get_counterparty", { _request: id });
     if (error) throw error;
     const row = (data?.[0] ?? null) as Counterparty | null;
     return [id, row] as const;
   }));
-  return new Map(entries);
+  return new Map(entries) as Map<string, Counterparty>;
 }
 
 export const marketplaceError = (error: unknown) =>

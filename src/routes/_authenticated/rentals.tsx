@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
-import { ArrowRight, Check, CircleAlert, MapPin, Phone, ShieldCheck, Truck } from "lucide-react";
+import { ArrowRight, CalendarDays, Check, CircleAlert, MapPin, Phone, ShieldCheck, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
