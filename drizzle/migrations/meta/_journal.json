@@ -8,6 +8,13 @@
       "when": 1791442439355,
       "tag": "0000_create_indrobe_marketplace",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793787022338,
+      "tag": "0001_fix_listing_policy_and_counterparty",
+      "breakpoints": true
     }
   ]
 }
