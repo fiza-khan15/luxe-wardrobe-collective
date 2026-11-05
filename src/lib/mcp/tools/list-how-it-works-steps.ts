@@ -4,15 +4,15 @@ export default defineTool({
   name: "list_how_it_works_steps",
   title: "List how-it-works steps",
   description:
-    "List the three public steps of the rental flow, from subscribing to peer-to-peer garment care.",
+    "List the three public steps of the rental flow, from requesting a piece to peer-to-peer garment care.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: () => {
     const steps = [
       {
         step: 1,
-        title: "Subscribe & Select",
-        body: "Pick a tier, from Weekend Passes to Creator Packs. Browse a curated, high-aesthetic digital catalog of verified items.",
+        title: "Browse & Request",
+        body: "Browse a curated, high-aesthetic catalog of verified items. Request the piece you want for your dates — one item per request, from 1 to 10 days.",
       },
       {
         step: 2,
