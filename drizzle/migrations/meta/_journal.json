@@ -15,6 +15,13 @@
       "when": 1793787022338,
       "tag": "0001_fix_listing_policy_and_counterparty",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793860382537,
+      "tag": "0002_add_razorpay_payment_flow",
+      "breakpoints": true
     }
   ]
 }

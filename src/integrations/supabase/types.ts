@@ -245,6 +245,7 @@ export type Database = {
           created_at: string
           giver_payout_status: string
           id: string
+          needs_refund: boolean
           razorpay_order_id: string
           razorpay_payment_id: string | null
           refunded_amount: number
@@ -257,6 +258,7 @@ export type Database = {
           created_at?: string
           giver_payout_status?: string
           id?: string
+          needs_refund?: boolean
           razorpay_order_id: string
           razorpay_payment_id?: string | null
           refunded_amount?: number
@@ -269,6 +271,7 @@ export type Database = {
           created_at?: string
           giver_payout_status?: string
           id?: string
+          needs_refund?: boolean
           razorpay_order_id?: string
           razorpay_payment_id?: string | null
           refunded_amount?: number
@@ -506,10 +509,15 @@ export type Database = {
         Args: { _suspended: boolean; _user: string }
         Returns: undefined
       }
+      confirm_payment: {
+        Args: { _amount_paise: number; _order_id: string; _payment_id: string }
+        Returns: string
+      }
       create_rental_request: {
         Args: { _end: string; _listing: string; _start: string }
         Returns: string
       }
+      fail_payment: { Args: { _order_id: string }; Returns: undefined }
       get_blocked_ranges: {
         Args: { _listing: string }
         Returns: {
@@ -538,6 +546,7 @@ export type Database = {
         Args: { _body: string; _link: string; _title: string; _user: string }
         Returns: undefined
       }
+      prepare_payment: { Args: { _request: string }; Returns: number }
       rental_action: {
         Args: { _action: string; _id: string; _note?: string }
         Returns: Database["public"]["Enums"]["request_status"]
