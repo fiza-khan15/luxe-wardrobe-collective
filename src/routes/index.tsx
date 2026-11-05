@@ -12,7 +12,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Premium peer-to-peer wardrobe subscription for creators and students. Rent high-end aesthetics for a flat monthly fee, or monetize your closet with zero risk.",
+          "India's peer-to-peer wardrobe rental for creators and students. Rent high-end fashion by the day, or monetize your own closet with zero risk.",
       },
       { property: "og:title", content: "indrobe — An infinite wardrobe." },
       {
@@ -68,9 +68,9 @@ function Hero() {
             <span className="text-muted-foreground">Zero fast fashion.</span>
           </h1>
           <p className="animate-rise delay-200 mx-auto mt-8 max-w-2xl text-pretty text-lg text-muted-foreground sm:text-xl">
-            The premium peer-to-peer wardrobe subscription for creators and
-            students. Rent high-end aesthetics for a flat monthly fee, or
-            monetize your own closet with zero risk.
+            The premium peer-to-peer wardrobe rental for creators and
+            students. Rent high-end fashion by the day — one piece at a time —
+            or monetize your own closet with zero risk.
           </p>
           <div className="animate-rise delay-300 mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
@@ -115,8 +115,8 @@ function HowItWorks() {
   const steps = [
     {
       icon: Sparkles,
-      title: "Subscribe & Select.",
-      body: "Pick a tier, from Weekend Passes to Creator Packs. Browse a curated, high-aesthetic digital catalog of verified items.",
+      title: "Browse & Request.",
+      body: "Browse a curated, high-aesthetic catalog of verified items. Request the piece you want for your dates — one item per request, from 1 to 10 days.",
     },
     {
       icon: Truck,
