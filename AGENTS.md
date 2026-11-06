@@ -4,3 +4,4 @@
 - Keep customer browsing public and place account-only marketplace routes under a single client-gated, `ssr: false` pathless layout, because browser sessions cannot be read during server rendering.
 - Use the existing browser Supabase client for RLS-protected reads and writes, and use database RPCs for state transitions; this keeps permissions enforced by the user's session and centralizes rental rules.
 - Keep payment-provider operations out of browser code and do not mark a rental as paid without a verified provider callback, because payment confirmation must be authoritative.
+- Keep Razorpay API access, signature checks, and payment capture in `*.server.ts` helpers called only by authenticated functions or signature-verified public webhook routes, because provider credentials must never enter the browser bundle.
