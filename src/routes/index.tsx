@@ -44,7 +44,7 @@ function Nav() {
             href="#waitlist"
             className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold focus-visible:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
           >
-            Join Waitlist
+            Join the list
             <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </nav>
