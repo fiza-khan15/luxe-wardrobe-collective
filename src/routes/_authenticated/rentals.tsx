@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useState } from "react";
 import { ArrowRight, CalendarDays, Check, CircleAlert, MapPin, Phone, ShieldCheck, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { MarketplaceFrame, PageIntro } from "@/lib/marketplace-ui";
 import { fetchCounterparties, fetchListings, inr, marketplaceError, type Counterparty, type MarketplaceListing } from "@/lib/marketplace";
 import { supabase } from "@/integrations/supabase/client";
+import { createPaymentOrder, verifyPayment } from "@/lib/payments.functions";
 
 export const Route = createFileRoute("/_authenticated/rentals")({
   component: RentalsPage,
@@ -23,10 +25,49 @@ export const Route = createFileRoute("/_authenticated/rentals")({
 
 type Request = { id: string; listing_id: string; start_date: string; end_date: string; days: number; rental_fee: number; deposit: number; status: string; created_at: string };
 
+type RazorpayCheckoutResponse = { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string };
+type RazorpayCheckoutOptions = {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (response: RazorpayCheckoutResponse) => void;
+  modal: { ondismiss: () => void };
+};
+type RazorpayCheckout = { open: () => void; on: (event: "payment.failed", handler: (response: { error?: { description?: string } }) => void) => void };
+type RazorpayConstructor = new (options: RazorpayCheckoutOptions) => RazorpayCheckout;
+
+function loadRazorpayCheckout() {
+  const checkoutWindow = window as Window & { Razorpay?: RazorpayConstructor };
+  if (checkoutWindow.Razorpay) return Promise.resolve();
+
+  return new Promise<void>((resolve, reject) => {
+    const scriptUrl = "https://checkout.razorpay.com/v1/checkout.js";
+    const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${scriptUrl}"]`);
+    if (existingScript) {
+      existingScript.addEventListener("load", () => resolve(), { once: true });
+      existingScript.addEventListener("error", () => reject(new Error("Could not load Razorpay Checkout.")), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = scriptUrl;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Could not load Razorpay Checkout."));
+    document.body.appendChild(script);
+  });
+}
+
 const statusLabel: Record<string, string> = { pending: "Waiting for owner", accepted: "Accepted · payment pending", paid: "Confirmed", dispatched: "On the way", received: "With you", returned: "Return sent", completed: "Complete", cancelled: "Cancelled", declined: "Declined", expired: "Expired", disputed: "Under review" };
 
 function RentalsPage() {
   const { user } = Route.useRouteContext();
+  const navigate = useNavigate();
+  const createOrder = useServerFn(createPaymentOrder);
+  const confirmPayment = useServerFn(verifyPayment);
   const [requests, setRequests] = useState<Request[]>([]); const [listings, setListings] = useState<MarketplaceListing[]>([]); const [people, setPeople] = useState<Map<string, Counterparty>>(new Map()); const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [notice, setNotice] = useState(""); const [busyId, setBusyId] = useState(""); const [photos, setPhotos] = useState<Record<string, File | undefined>>({}); const [cleaned, setCleaned] = useState<Record<string, boolean>>({}); const [disputeText, setDisputeText] = useState<Record<string, string>>({});
 
   const reload = useCallback(async () => {
@@ -49,6 +90,61 @@ function RentalsPage() {
   }, [reload]);
 
   const listingById = new Map(listings.map((listing) => [listing.id, listing]));
+
+  const showPaymentError = (cause: unknown) => {
+    const message = cause instanceof Error ? cause.message : "Payment could not be completed. Please try again.";
+    if (message.includes("VERIFY_REQUIRED")) {
+      setError("Identity review is required before payment. Complete your verification to continue.");
+      void navigate({ to: "/profile" });
+      return;
+    }
+    setError(message);
+  };
+
+  const startPayment = async (request: Request) => {
+    setBusyId(request.id); setError(""); setNotice("");
+    try {
+      const order = await createOrder({ data: { requestId: request.id } });
+      await loadRazorpayCheckout();
+      const checkoutWindow = window as Window & { Razorpay?: RazorpayConstructor };
+      const Checkout = checkoutWindow.Razorpay;
+      if (!Checkout) throw new Error("Could not load Razorpay Checkout.");
+
+      const checkout = new Checkout({
+        key: order.keyId,
+        amount: order.amountPaise,
+        currency: order.currency,
+        name: "indrobe",
+        description: "Clothing rental payment",
+        order_id: order.orderId,
+        handler: async (response) => {
+          try {
+            await confirmPayment({ data: {
+              requestId: request.id,
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            } });
+            await reload();
+            setNotice("Payment confirmed.");
+          } catch (cause) {
+            showPaymentError(cause);
+          } finally {
+            setBusyId("");
+          }
+        },
+        modal: { ondismiss: () => setBusyId("") },
+      });
+      checkout.on("payment.failed", (response) => {
+        setError(response.error?.description || "Payment failed. Please try again.");
+        setBusyId("");
+      });
+      checkout.open();
+    } catch (cause) {
+      showPaymentError(cause);
+      setBusyId("");
+    }
+  };
 
   const action = async (request: Request, name: string, note?: string, photoKind?: "receipt" | "return") => {
     setBusyId(request.id); setError(""); setNotice("");
@@ -79,7 +175,7 @@ function RentalsPage() {
       const photoKind = request.status === "dispatched" ? "receipt" : request.status === "received" ? "return" : undefined;
       return <article key={request.id} className="grid gap-5 py-7 lg:grid-cols-[128px_minmax(0,1fr)_minmax(240px,0.85fr)] lg:items-start"><Link to="/items/$id" params={{ id: request.listing_id }} className="aspect-[4/3] overflow-hidden bg-muted lg:aspect-square">{listing?.photos[0] && <img src={listing.photos[0]} alt={listing.title} width={1600} height={1008} loading="lazy" className="h-full w-full object-cover" />}</Link><div><p className="text-xs font-medium uppercase tracking-wider text-gold">{statusLabel[request.status] ?? request.status}</p><h2 className="mt-2 text-lg font-medium">{listing?.title ?? "Wardrobe piece"}</h2><p className="mt-2 flex items-center gap-1 text-sm text-muted-foreground"><MapPin className="h-3.5 w-3.5" />{listing?.city ?? "India"}<span>·</span>Size {listing?.size ?? "—"}</p><p className="mt-2 text-sm text-muted-foreground">{formatDate(request.start_date)} – {formatDate(request.end_date)} · {request.days} days</p><p className="mt-3 text-sm">{inr(request.rental_fee)} rental <span className="text-muted-foreground">+ {inr(request.deposit)} refundable deposit</span></p>{person && <div className="mt-4 space-y-1 text-xs text-muted-foreground"><p className="font-medium text-foreground">{person.full_name}{person.verified && <span className="ml-2 inline-flex items-center gap-1 text-gold"><ShieldCheck className="h-3 w-3" />Verified</span>}</p><p>{person.city}</p>{person.phone && <p className="flex items-center gap-1"><Phone className="h-3 w-3" />{person.phone}</p>}{person.address && <p><span className="font-medium text-foreground">Return address:</span> {person.address}</p>}</div>}</div><div className="space-y-3 lg:border-l lg:border-border lg:pl-6">
         {request.status === "pending" && <p className="text-xs text-muted-foreground">The owner has 48 hours to reply. You can cancel any time before payment.</p>}
-        {request.status === "accepted" && <p className="border-l-2 border-gold pl-3 text-xs leading-5 text-muted-foreground">Checkout will be available when payment is connected.</p>}
+        {request.status === "accepted" && <Button disabled={Boolean(busyId)} onClick={() => void startPayment(request)} className="w-full rounded-full">{busyId === request.id ? "Opening secure checkout…" : `Verify and pay ${inr(request.rental_fee + request.deposit)}`}</Button>}
         {request.status === "paid" && <p className="text-xs text-muted-foreground">The owner is preparing dispatch. You will see the delivery details above once the piece is on its way.</p>}
         {photoKind && <div className="space-y-2"><Label htmlFor={`photo-${request.id}`} className="text-xs">{photoPrompt}</Label><Input id={`photo-${request.id}`} type="file" accept="image/*" onChange={(event) => setPhotos((current) => ({ ...current, [request.id]: event.target.files?.[0] }))} className="h-10 text-xs" /></div>}
         {request.status === "dispatched" && <Button disabled={busy || !photos[request.id]} onClick={() => void action(request, "receive", undefined, "receipt")} className="w-full rounded-full"><Check className="mr-2 h-4 w-4" />Mark as received</Button>}
