@@ -5,5 +5,6 @@
 - [ ] Add renter requests and giver request management with lifecycle actions.
 - [ ] Add rental tracking, private condition photos, and dispute reporting.
 - [ ] Add private admin review tools after the admin identity is supplied.
-- [ ] Connect payment creation and verified confirmation after the payment setup is ready.
+- [ ] Connect the renter checkout UI to authenticated payment creation and verification, and configure Razorpay API credentials.
+- [x] Add the signature-verified Razorpay webhook endpoint for payment callbacks.
 - [ ] Verify routes, mobile layout, and preview diagnostics.
